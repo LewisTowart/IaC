@@ -24,5 +24,4 @@ sg rules for agent 22 open for the controller. end for access available.
 
 controller can ping thr agent node.
 
-## Terraform - Orchastration 
 
