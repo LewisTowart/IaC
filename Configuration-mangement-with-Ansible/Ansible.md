@@ -20,14 +20,9 @@ Benefits of Ansible:
 
 I am going to need to create one instance for the Ansible controller to be installed on and two more instances which will act as agent nodes.
 
-For the controller to ping these instances I am going to need to make sure it has SSH access and that the ports on the agent nodes allow incoming SSH port 22 connections.
+For the controller to ping these instances I am going to need to make sure it has SSH access and that the ports on the agent nodes allow incoming SSH port 22 connections. I am also going to need to submit the IP addresses so that the controller knows what instance to ping.
 
-minimum 18.04 ubuntu install ansible controller, use this to configure the other two instances we will create. We create playbooks.yml in the controller and the we also host file (inventory) etc/ansible/ (default location). Have to run from this directory.
+On the controller I can create playbooks.yml that will tell it what packages to install. and 
 
-need ip in host file to allow it to ssh in to the agent. We need to provide the required key pair to the controller.
-
-sg rules for agent 22 open for the controller. end for access available.
-
-controller can ping thr agent node.
-
+The host file (inventory) is located here etc/ansible/ (default location). I have to run the playbooks from this directory.
 
