@@ -26,3 +26,10 @@ On the controller I can create playbooks.yml that will tell it what packages to 
 
 The host file (inventory) is located here etc/ansible/ (default location). I have to run the playbooks from this directory.
 
+Create 3 instances
+
+tech258-lewis-ansible-controller SG SSH 22
+tech258-lewis-ansible-app SG SSH 22, HTTP 80, Node 3000
+tech258-lewis-ansible-db SG SSH 22, Mongodb 27017
+
+
