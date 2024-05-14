@@ -171,7 +171,9 @@ Copy a file from the controller over to one of the nodes. Here I'm referencing t
 sudo ansible web -m copy -a "src=/home/ubuntu/testing-controller.txt dest=/home/ubuntu"
 ```
 
+### Adhoc Commands
 
+https://docs.ansible.com/ansible/latest/command_guide/intro_adhoc.html
 
 
 
