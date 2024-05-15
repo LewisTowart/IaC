@@ -311,6 +311,43 @@ Run the newly created playbook with the below command.
 sudo ansible-playbook app-playbook.yml
 ```
 
+### Database playbook
+
+---
+- hosts: db
+
+  gather_facts: yes
+
+  become: true
+
+# install mongodb
+
+  tasks:
+  - name: install and configure mongodb
+    apt: pkg=mongodb state=present
+
+# allow required ports 27017 from app
+#deleted the default mongo.conf rm -rf /etc/mongod.conf
+# create mongod.conf in the controlller - with required config
+# Need read permissions
+# allow 27017 from app or 0000
+  - name: Allow Ports
+    lineinfile:
+      path: /etc/mongodb.conf
+      regexp: '^ *bind_ip *=.*$'
+      line: 'bind_ip = 0.0.0.0'
+      backrefs: yes
+# restart mongodb
+# enable mongodb
+  - name: Restart and Enable
+    systemd:
+      name: mongodb
+      state: restarted
+      enabled: yes
+# create an env DB_HOST=db-ip:27017/posts
+# back to web server restart the app/pm2 start
+
+
 
 
 
