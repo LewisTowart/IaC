@@ -22,9 +22,9 @@ The host file (inventory) is located here etc/ansible/ (default location). I hav
 
 Create 3 instances
 
-tech258-lewis-ansible-controller SG SSH 22
-tech258-lewis-ansible-app SG SSH 22, HTTP 80, Node 3000
-tech258-lewis-ansible-db SG SSH 22, Mongodb 27017
+* tech258-lewis-ansible-controller SG SSH 22
+* tech258-lewis-ansible-app SG SSH 22, HTTP 80, Node 3000
+* tech258-lewis-ansible-db SG SSH 22, Mongodb 27017
 
 SSH into all 3 instances and run
 
