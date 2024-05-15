@@ -110,13 +110,15 @@ sudo nano hosts
 ```
 
 ```
-app ansible_host=34.253.207.240 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/tech258.pem ansible_port=22
+# app ansible_host=34.253.207.240 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/tech258.pem ansible_port=22
 
-database ansible_host=52.213.36.231 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/tech258.pem ansible_port=22
+# database ansible_host=52.213.36.231 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/tech258.pem ansible_port=22
 
-# Shahrukhs
-# [web]
-# ec2-instance-app ansible_host=3.252.65.152 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/shahrukh-devops.pem
+[web]
+ec2-instance-app ansible_host=3.252.65.152 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/shahrukh-devops.pem
+
+[db]
+ec2-instance-database ansible_host=3.252.65.152 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/shahrukh-devops.pem
 ```
 
 To ping all specified in the hosts file you can do the below command. This in industry would be the regions that you're pinging.
@@ -177,6 +179,117 @@ Copy a file from the controller over to one of the nodes. Here I'm referencing t
 ```
 sudo ansible web -m copy -a "src=/home/ubuntu/testing-controller.txt dest=/home/ubuntu"
 ```
+
+### Creating a playbook to install Nginx
+
+sudo nano nginx-playbook.yml
+
+```
+# creating a playbook to install/configure nginx in the web server
+---
+# YAML starts with three dashes
+ 
+# add the name of the host web
+- hosts: web
+ 
+# see the logs gather facts
+  gather_facts: yes
+ 
+# provide admin access - sudo
+  become: true
+ 
+# add instructions to install nginx on the web server
+  tasks:
+  - name: Installing Nginx web server
+    apt: pkg=nginx state=present
+# ensure to nginx is in a running state
+```
+
+Run the play book
+
+```
+sudo ansible-playbook nginx-playbook.yml
+```
+
+Check nginx is running
+
+```
+sudo ansible web -a "sudo systemctl status nginx"
+```
+
+### Playbook to clone code
+
+```
+---
+# YAML starts with three dashes
+
+# add the name of the host web
+- hosts: web
+
+# see the logs gather facts
+  gather_facts: yes
+
+# provide admin access - sudo
+  become: true
+
+# add instructions to clone a GitHub repository on the web server
+  tasks:
+  - name: Install Git
+    apt:
+      name: git
+      state: present
+
+  - name: Clone GitHub repository
+    git:
+      repo: 'https://github.com/LewisTowart/tech258-sparta-test-app'
+      dest: tech258-sparta-test-app
+      version: main
+      force: yes
+```
+
+
+---
+- name: Install Node.js 10.x, PM2, and npm
+  hosts: web
+  become: yes
+  
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Node.js dependencies
+      apt:
+        name:
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Add Node.js 10.x repository key
+      apt_key:
+        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+        state: present
+
+    - name: Add Node.js 10.x repository
+      apt_repository:
+        repo: deb https://deb.nodesource.com/node_10.x bionic main
+        state: present
+        update_cache: yes
+
+    - name: Install Node.js 10.x
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Install npm
+      apt:
+        name: npm
+        state: present
+
+    - name: Install PM2 Version 4.x
+      npm:
+        name: pm2@4
+        global: yes
 
 
 
