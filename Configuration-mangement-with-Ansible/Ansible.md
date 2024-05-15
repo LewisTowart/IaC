@@ -180,9 +180,13 @@ Copy a file from the controller over to one of the nodes. Here I'm referencing t
 sudo ansible web -m copy -a "src=/home/ubuntu/testing-controller.txt dest=/home/ubuntu"
 ```
 
-### Creating a playbook to install Nginx
+### Creating a Playbook to Install Nginx
 
+Use the below command to start creating the playbook.
+
+```
 sudo nano nginx-playbook.yml
+```
 
 ```
 # creating a playbook to install/configure nginx in the web server
@@ -217,7 +221,15 @@ Check nginx is running
 sudo ansible web -a "sudo systemctl status nginx"
 ```
 
-### Playbook to clone code
+#### Whole script
+
+Create the file with the below command
+
+```
+sudo nano app-playbook.yml
+```
+
+Paste the below script to get the app running can check the public IP with :3000 on the end to see if it was successful.
 
 ```
 ---
@@ -232,65 +244,72 @@ sudo ansible web -a "sudo systemctl status nginx"
 # provide admin access - sudo
   become: true
 
-# add instructions to clone a GitHub repository on the web server
+# add instructions to install nginx on the web server
   tasks:
-  - name: Install Git
-    apt:
-      name: git
-      state: present
+     - name: Installing Nginx web server
+       apt: pkg=nginx state=present
+# ensure to nginx is in a running state
 
-  - name: Clone GitHub repository
-    git:
-      repo: 'https://github.com/LewisTowart/tech258-sparta-test-app'
-      dest: tech258-sparta-test-app
-      version: main
-      force: yes
-```
+# install node
+     - name: Installing Node.js
+       apt:
+         name: nodejs
+         state: present
 
-
----
-- name: Install Node.js 10.x, PM2, and npm
-  hosts: web
-  become: yes
-  
   tasks:
-    - name: Update apt package cache
+    - name: Update and upgrade apt packages
       apt:
+        upgrade: yes
         update_cache: yes
-
-    - name: Install Node.js dependencies
-      apt:
-        name:
-          - curl
-          - software-properties-common
-        state: present
-
-    - name: Add Node.js 10.x repository key
-      apt_key:
-        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-        state: present
-
-    - name: Add Node.js 10.x repository
-      apt_repository:
-        repo: deb https://deb.nodesource.com/node_10.x bionic main
-        state: present
-        update_cache: yes
-
-    - name: Install Node.js 10.x
-      apt:
-        name: nodejs
-        state: present
-
-    - name: Install npm
+        cache_valid_time: 86400 #One day
+ 
+## install npm
+    - name: Installing npm
       apt:
         name: npm
         state: present
+ 
+    - name: download latest npm + Mongoose
+      shell: |
+        npm install -g npm@latest
+        npm install mongoose@ -y
+ 
+## update and upgrade agent node
+  tasks:
+  - name: Update and upgrade apt packages
+    apt:
+      upgrade: yes
+      update_cache: yes
+      cache_valid_time: 86400 #One day
+ 
+## clone app
 
-    - name: Install PM2 Version 4.x
-      npm:
-        name: pm2@4
-        global: yes
+  - name: clone app github repository
+    git:
+      repo: https://github.com/LewisTowart/tech258-lewis-cicd-app
+      dest: /tech258-lewis-cicd-app
+      clone: yes
+      update: yes
+## install pm2
+  - name: install pm2
+    shell: |
+      cd /tech258-lewis-cicd-app/app
+      npm install -y
+      npm install pm2@4.0.0 -g
+ 
+## launch app with pm2
+  - name: launch app with pm2
+    shell: |
+      cd /tech258-lewis-cicd-app/app
+      pm2 kill
+      pm2 start app.js
+```
 
+Run the newly created playbook with the below command.
+
+```
+sudo ansible-playbook app-playbook.yml
+```
 
 
 
