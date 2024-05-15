@@ -221,7 +221,7 @@ Check nginx is running
 sudo ansible web -a "sudo systemctl status nginx"
 ```
 
-#### Whole script
+### Whole script
 
 Create the file with the below command
 
