@@ -1,9 +1,3 @@
-# Infrastructure as Code (IaC)
-
-Helps us codify all things related to infrastructure. Can write a language we can read that can instruct the machines and execute tasks accordingly.
-
-An example is being to automate the process of SSHing into the VM and installing packages or running commands like update and upgrade.
-
 ## Ansible - Configuration Management
 
 Ansible and configuration management is responsible for being able to ping instances and install what ever packages you specify on them.
@@ -39,7 +33,16 @@ sudo apt-get update
 sudo apt-get upgrade -y
 ```
 
-On controller you can run the below command to install any packages that could be missing
+You can just do this for the controller and use the below command to update and upgrade them from it.
+
+Update all connected nodes specified in the hosts file
+
+```
+sudo ansible all -a "sudo apt-get update -y"
+sudo ansible all -a "sudo apt-get upgrade -y"
+```
+
+On the controller you can run the below command to install any packages that could be missing
 
 ```
 sudo apt-get install software-properties-common
@@ -122,6 +125,10 @@ To ping all specified in the hosts file you can do the below command. This in in
 sudo ansible all -m ping
 ```
 
+### Adhoc Commands and Extras
+
+https://docs.ansible.com/ansible/latest/command_guide/intro_adhoc.html
+
 You can install tree 
 
 ```
@@ -170,10 +177,6 @@ Copy a file from the controller over to one of the nodes. Here I'm referencing t
 ```
 sudo ansible web -m copy -a "src=/home/ubuntu/testing-controller.txt dest=/home/ubuntu"
 ```
-
-### Adhoc Commands
-
-https://docs.ansible.com/ansible/latest/command_guide/intro_adhoc.html
 
 
 
