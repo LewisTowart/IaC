@@ -1,11 +1,11 @@
 - [Terraform - Orchestration](#terraform---orchestration)
     - [States](#states)
-  - [Introduction](#introduction)
+- [Introduction](#introduction)
   - [Installing Terraform](#installing-terraform)
   - [Setting Up Terraform](#setting-up-terraform)
   - [Variables](#variables)
   - [Git Ignore](#git-ignore)
-  - [Using Terraform to Create a VPC](#using-terraform-to-create-a-vpc)
+- [Using Terraform to Create a VPC](#using-terraform-to-create-a-vpc)
     - [Launching the App](#launching-the-app)
     - [Launching the App in the VPC with two subnets](#launching-the-app-in-the-vpc-with-two-subnets)
     - [Creating the DB instance](#creating-the-db-instance)
@@ -28,17 +28,23 @@ Benefits:
 
 #### States
 
- talk about desired and current state e.g change name on aws current ois different it will say if you terraform plan
+Desired State:
+This is the configuration you define in your Terraform files (e.g., main.tf). It represents what you want your infrastructure to look like.
 
- change name in script desired is different to current launched instance
+Current State:
+This is the actual state of your infrastructure at any given moment. Terraform keeps track of this state in a state file (e.g., terraform.tfstate).
 
-### Introduction
+To put this into perspective if you have an instance running on AWS and used the portal to change it's name. This is the current state which is now different to the desired state which is how you set the instance up originally in the main.tf. If you try to run a terraform plan it will act as a form of version control and say something had been changed within the current state.
+
+As for the desired state if you had an instance deployed called instance_1 and then went back to the main.tf and changed the name to instance_2 the desired state would now be ahead/different to the current state. This is referred to as desired as it is how you want the current state of the instance to be but not in fact what the current state actually is it would still be named instance_1 until you run terraform plan and apply.
+
+## Introduction
 
 Before starting be warned:
 * :boom: AWS_ACCESS_KEY_ID: DO NOT HARDCODE THE KEY IN TERRAFORM :boom:
 * :boom: AWS_SECRET_ACCESS_KEY: DO NOT HARDCODE THE KEY IN TERRAFORM :boom:
 * :boom: DO NOT PUSH ANYTHING TO GITHUB UNTIL WE HAVE CREATED A .gitignore file :boom:
-* :boom: .gitignore NEEDS TO INCLUDE THE terraform.tfstate, terraform.tfstate.backup, variables.tf, .terrform/ and terraform.lock.hcl files. :boom:
+* :boom: .gitignore NEEDS TO INCLUDE THE terraform.tfstate, terraform.tfstate.backup, variables.tf, .terrform/ and terraform.lock.hcl FILES. :boom:
 
 ### Installing Terraform
 
@@ -105,7 +111,7 @@ terraform.tfstate
 terraform.tfstate.backup
 variable.tf
 
-### Using Terraform to Create a VPC
+## Using Terraform to Create a VPC
 
 :boom: It is important to note with Terraform you are going to want to launch your VS code where you are editing your Terraform script and if you're using a separate bash terminal this will also need to be run as administrator. :boom:
 
