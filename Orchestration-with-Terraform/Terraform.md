@@ -1,5 +1,5 @@
 - [Terraform - Orchestration](#terraform---orchestration)
-    - [States](#states)
+  - [States](#states)
 - [Introduction](#introduction)
   - [Installing Terraform](#installing-terraform)
   - [Setting Up Terraform](#setting-up-terraform)
@@ -10,6 +10,7 @@
     - [Launching the App in the VPC with two subnets](#launching-the-app-in-the-vpc-with-two-subnets)
     - [Creating the DB instance](#creating-the-db-instance)
     - [Security group for the DB](#security-group-for-the-db)
+    - [Creating a Repo on Github](#creating-a-repo-on-github)
 
 
 ## Terraform - Orchestration
@@ -26,7 +27,7 @@ Benefits:
 * Very powerful
 * Automation
 
-#### States
+### States
 
 Desired State:
 This is the configuration you define in your Terraform files (e.g., main.tf). It represents what you want your infrastructure to look like.
@@ -351,6 +352,28 @@ resource "aws_security_group" "db_security_group" {
 }
 ```
 
+#### Creating a Repo on Github
+
+In this script I am providing terraform with the token I generated from going into my GitHub account settings, using develop settings right at the bottom, clicking personal access tokens, tokens (classic) and then generate new token (classic). The options I selected were repo and admin:repo_hook. Make sure to select the options you need for what action you are trying to perform.
+
+```
+provider "github" {
+
+  token = var.git_token
+
+}
+resource "github_repository" "automated_repo" {
+  name        = "IaC-github-automated-repo"
+  description = "automated terraform repo"
+  visibility  = "public"
+}
+```
+
+Make sure to run the below command when you are working with a new provider to download and install the required dependencies
+
+```
+terraform init
+```
 
 
 
