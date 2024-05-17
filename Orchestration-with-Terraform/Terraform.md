@@ -6,8 +6,8 @@
   - [Variables](#variables)
   - [Git Ignore](#git-ignore)
 - [Using Terraform to Create a VPC](#using-terraform-to-create-a-vpc)
-    - [Launching the App](#launching-the-app)
-    - [Launching the App in the VPC with two subnets](#launching-the-app-in-the-vpc-with-two-subnets)
+    - [Creating the App Instance](#creating-the-app-instance)
+    - [Creating the App Instance in the VPC with two subnets](#creating-the-app-instance-in-the-vpc-with-two-subnets)
     - [Creating the DB instance](#creating-the-db-instance)
     - [Security group for the DB](#security-group-for-the-db)
     - [Creating a Repo on Github](#creating-a-repo-on-github)
@@ -141,7 +141,7 @@ Now in the bash terminal we want to run the below command which will download an
 terraform init
 ```
 
-#### Launching the App
+#### Creating the App Instance
 
 Below is the code for launching the instance for the app. This need to be pasted/written in the main.tf script file.
 
@@ -195,7 +195,7 @@ My instance will now be running, if we want to terminate the instance we could u
 terraform destroy
 ```
 
-#### Launching the App in the VPC with two subnets
+#### Creating the App Instance in the VPC with two subnets
 
 This script will create a VPC with two subnets one for the App and one for the Database. It will also launch the App in the App subnet and apply the security group I have outline.
 
