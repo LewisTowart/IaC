@@ -347,7 +347,16 @@ sudo ansible-playbook app-playbook.yml
 # create an env DB_HOST=db-ip:27017/posts
 # back to web server restart the app/pm2 start
 
+# echo "DB_HOST=mongodb://172.31.40.174:27017/posts" | sudo tee -a /etc/environment >/dev/null
 
+# source /etc/environment
+
+# curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
+# sudo apt install nodejs
+
+# sudo npm install mongoose@4.09
+
+# export DB_HOST=mongodb://10.0.3.4:27017/posts 
 
 
 
