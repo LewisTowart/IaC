@@ -378,6 +378,19 @@ Make sure to run the below command when you are working with a new provider to d
 terraform init
 ```
 
+You can work with multiple providers similar to the script below by referencing which providers will be included within your script and running the terraform init command to get the necessary dependencies.
+
+```
+provider "aws"{
+
+        region = var.sparta_region
+}
+provider "github" {
+
+  token = var.git_token
+}
+```
+
 ### Notes
 
 
