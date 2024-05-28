@@ -11,6 +11,7 @@
     - [Creating the DB instance](#creating-the-db-instance)
     - [Security group for the DB](#security-group-for-the-db)
     - [Creating a Repo on Github](#creating-a-repo-on-github)
+  - [Notes](#notes)
 
 
 ## Terraform - Orchestration
@@ -46,6 +47,8 @@ Before starting be warned:
 * :boom: AWS_SECRET_ACCESS_KEY: DO NOT HARDCODE THE KEY IN TERRAFORM :boom:
 * :boom: DO NOT PUSH ANYTHING TO GITHUB UNTIL WE HAVE CREATED A .gitignore file :boom:
 * :boom: .gitignore NEEDS TO INCLUDE THE terraform.tfstate, terraform.tfstate.backup, variables.tf, .terrform/ and terraform.lock.hcl FILES. :boom:
+
+![alt text](Markdown_Images/terraform-arch.png)
 
 ### Installing Terraform
 
@@ -374,6 +377,10 @@ Make sure to run the below command when you are working with a new provider to d
 ```
 terraform init
 ```
+
+### Notes
+
+
 
 
 
