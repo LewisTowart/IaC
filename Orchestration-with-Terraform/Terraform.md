@@ -1,6 +1,7 @@
 - [Terraform - Orchestration](#terraform---orchestration)
   - [States](#states)
 - [Introduction](#introduction)
+- [Project Architecture](#project-architecture)
   - [Installing Terraform](#installing-terraform)
   - [Setting Up Terraform](#setting-up-terraform)
   - [Variables](#variables)
@@ -49,6 +50,10 @@ Before starting be warned:
 * :boom: .gitignore NEEDS TO INCLUDE THE terraform.tfstate, terraform.tfstate.backup, variables.tf, .terrform/ and terraform.lock.hcl FILES. :boom:
 
 ![alt text](Markdown_Images/terraform-arch.png)
+
+## Project Architecture
+
+![alt text](Markdown_Images/terraform-diagram-final.png)
 
 ### Installing Terraform
 
