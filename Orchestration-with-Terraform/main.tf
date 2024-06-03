@@ -83,9 +83,6 @@ resource "aws_instance" "app_instance" {
 # app_subnet
        subnet_id = aws_subnet.app_subnet.id
 
-# associate out key
-       key_name = var.my_key_name
-
 # SG group
        vpc_security_group_ids = [aws_security_group.app_security_group.id]
 

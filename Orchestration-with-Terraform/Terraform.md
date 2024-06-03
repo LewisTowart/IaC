@@ -12,7 +12,7 @@
     - [Creating the DB instance](#creating-the-db-instance)
     - [Security group for the DB](#security-group-for-the-db)
     - [Creating a Repo on Github](#creating-a-repo-on-github)
-  - [Notes](#notes)
+- [Using S3 with terraform.tfstate](#using-s3-with-terraformtfstate)
 
 
 ## Terraform - Orchestration
@@ -396,7 +396,39 @@ provider "github" {
 }
 ```
 
-### Notes
+## Using S3 with terraform.tfstate
+
+S3 storage can be used for the terraform.tfstate files. This is a great way to add a layer of security and allow them to be shared with other members of the team who will also be working with them. One issue that can arise is that multiple people are working across the state files at the same time without communicating this fact. This is why the state files need to be locked to ensure only one person is making changes at one time. This is automatically done locally but needs to be configured for remote management. 
+
+DynamoDB is a key-value and document database that handles large amounts of data and high request rates, making it ideal for a wide range of applications. By setting up state locking with S3 and DynamoDB, you ensure that your Terraform state is managed safely and consistently, allowing multiple users to collaborate without conflict. A single DynamoDB table can be used to lock multiple remote state files. While creating a S3 bucket and DynamoDB table are necessary you also need to set up the backend to declare that S3 and Dynamo will be used for locking/state management.
+
+How It Works
+
+Initialization:
+
+* Run terraform init to initialize the backend configuration. Terraform will set up the S3 bucket for state storage and the DynamoDB table for state locking.
+
+Acquiring a Lock:
+
+* When you run a Terraform command that modifies the state (e.g., terraform plan or terraform apply), Terraform will attempt to acquire a lock in the DynamoDB table.
+* If the lock is acquired successfully, Terraform proceeds with the operation.
+
+Holding the Lock:
+
+* While the Terraform operation is in progress, the lock is held in the DynamoDB table. This prevents other Terraform operations from running concurrently and modifying the state file.
+
+Releasing the Lock:
+
+* Once the operation is complete, Terraform releases the lock from the DynamoDB table, allowing other operations to proceed.
+
+Handling Locking Issues:
+
+* If a Terraform operation is interrupted or fails to release the lock, you can manually remove the lock using the terraform force-unlock command with the lock ID.
+
+Region Requirement:
+
+* The S3 bucket and the resources (such as EC2 instances) accessing it must be in the same AWS region to avoid cross-region data transfer costs and potential latency issues.
+* If your S3 bucket is in the eu-west-1 region, your EC2 instances should also be in the eu-west-1 region for optimal performance and cost.
 
 
 
